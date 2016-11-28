@@ -95,8 +95,9 @@ public class GWModel extends PSysModel {
 
     void checkCollide(){
 
-    	for (Sprite bot: botList){
-		  if ( isOverlap(bot, player) ){
+    	for (int k = 0; k < botList.size(); k++){
+		  if ( isOverlap(botList.get(k), player) ){
+					Sprite bot = botList.get(k);
 	   		  bot = new Sprite(bot.radius, bot.x, bot.y, bot.velX, bot.velY , tombstoneImage);
     		  bot.velX = 0;
     		  bot.velY = 0;
@@ -106,22 +107,24 @@ public class GWModel extends PSysModel {
 		  };
     	}
 
-       for (Sprite proj: projectileList){
-    	  if( isOverlap(player, proj)){
+       for (int i = 0; i < projectileList.size(); i++){
+    	  if( isOverlap(player, projectileList.get(i))){
     		  player = new Sprite(player.radius, player.x, player.y, player.velX, player.velY , tombstoneImage);
     		  player.velX = 0;
     		  player.velY = 0;
+					Sprite proj = projectileList.get(i);
     		  Sprite deadproj = new Sprite(proj.radius, proj.x, proj.y, proj.velX, proj.velY, tombstoneImage);
     		  deadproj.velX = 0;
     		  deadproj.velY = 0;
     	  };
 
-    	  for (Sprite bot: botList){
-    		  if ( isOverlap(bot, proj) ){
+    	  for (int j = 0; j < botList.size(); j++){
+    		  if ( isOverlap(botList.get(j), projectileList.get(i)) ){
+						  Sprite bot = botList.get(j);
     	   		  bot = new Sprite(bot.radius, bot.x, bot.y, bot.velX, bot.velY , tombstoneImage);
         		  bot.velX = 0;
         		  bot.velY = 0;
-        		  projectileList.remove(proj);
+        		  projectileList.remove(projectileList.get(i));
     		  };
     	  }
        }
