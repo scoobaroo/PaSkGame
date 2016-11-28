@@ -18,7 +18,7 @@ public class Sprite extends Particle{
     // nx, ny: position (x, y)
     // vx, vy: velocity (x, y)
     // img: image to display
-    
+
     Sprite(int r, int nx, int ny, int vx, int vy, Image img) {
     	initSprite(r, nx, ny, vx, vy, img);
     }
@@ -29,13 +29,7 @@ public class Sprite extends Particle{
     }
 
     void draw(Graphics2D g) {
-        int bdWidth = 400;
-        int bdHeight = 300;
-    	int w=bdWidth/2;
-    	int h=bdHeight/2;
-    	x=0;
-    	y=0;
-    	g.drawImage(image, x, y, w, h, null); 
+    	g.drawImage(image, x, y, null);
     }
 
 }

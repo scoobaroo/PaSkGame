@@ -65,7 +65,7 @@ public class GWModel extends PSysModel {
     		player.velX += 5;
     	}
 			if(keyCode == KeyEvent.VK_SPACE){
-				player.addProjectile();
+				addProjectile();
 			}
     }
 
