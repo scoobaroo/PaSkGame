@@ -45,8 +45,8 @@ public class GWModel extends PSysModel {
     		return 0;
     }
 
-    void addProjectile(){
-    	Sprite projectile = new Sprite(player.radius, player.x+f(1)*(player.radius+10), player.y+f(1)*(player.radius + 10), player.velX, player.velY, projectileImage);
+    void addProjectile(Sprite p1){
+    	Sprite projectile = new Sprite(p1.radius, p1.x+f(1)*(p1.radius+10), p1.y+f(1)*(p1.radius + 10), p1.velX, p1.velY, projectileImage);
     	projectileList.add(projectile);
     }
 
@@ -65,7 +65,7 @@ public class GWModel extends PSysModel {
     		player.velX += 5;
     	}
 			if(keyCode == KeyEvent.VK_SPACE){
-				addProjectile();
+				addProjectile(player);
 			}
     }
 
@@ -88,8 +88,7 @@ public class GWModel extends PSysModel {
     		else if(bot.y < player.x){
     			bot.velY = 1;
     		}
-				Sprite projectile = new Sprite(bot.radius, bot.x+f(1)*(bot.radius+10), bot.y+f(1)*(bot.radius + 10), bot.velX, bot.velY, projectileImage);
-				projectileList.add(projectile);
+				addProjectile(bot);
     	}
     }
 
