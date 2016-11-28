@@ -12,9 +12,9 @@ public class GWModel extends PSysModel {
 	Image projectileImage;
 
     GWModel() {
+			player = new Sprite();
     	botList = new ArrayList<Sprite>();
-    	projectileList = new ArrayList <Sprite>();
-    	player = new Sprite();
+    	projectileList = new ArrayList<Sprite>();
     }
 
     void addBot(int rad, int x, int y, int vx, int vy, Image botImg) {
@@ -23,7 +23,7 @@ public class GWModel extends PSysModel {
     }
 
     void addPlayer(int rad, int x, int y, int vx, int vy, Image playerImage){
-    	Sprite player = new Sprite(rad, x, y, vx, vy , playerImage);
+    	player = new Sprite(rad, x, y, vx, vy, playerImage);
     }
 
     void addGraveStone(Image gImg){
@@ -79,15 +79,17 @@ public class GWModel extends PSysModel {
     		if(bot.x > player.x){
     			bot.velX = -1;
     		}
-    		if(bot.x < player.x){
+    		else if(bot.x < player.x){
     			bot.velX = 1;
     		}
     		if(bot.y > player.x){
     			bot.velY = -1;
     		}
-    		if(bot.y < player.x){
+    		else if(bot.y < player.x){
     			bot.velY = 1;
     		}
+				Sprite projectile = new Sprite(bot.radius, bot.x+f(1)*(bot.radius+10), bot.y+f(1)*(bot.radius + 10), bot.velX, bot.velY, projectileImage);
+				projectileList.add(projectile);
     	}
     }
 
@@ -98,7 +100,7 @@ public class GWModel extends PSysModel {
 	   		  bot = new Sprite(bot.radius, bot.x, bot.y, bot.velX, bot.velY , tombstoneImage);
     		  bot.velX = 0;
     		  bot.velY = 0;
-       		  player = new Sprite(player.radius, player.x, player.y, player.velX, player.velY , tombstoneImage);
+       		player = new Sprite(player.radius, player.x, player.y, player.velX, player.velY , tombstoneImage);
     		  player.velX = 0;
     		  player.velY = 0;
 		  };
