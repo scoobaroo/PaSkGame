@@ -20,10 +20,12 @@ public class GWModel extends PSysModel {
     void addBot(int rad, int x, int y, int vx, int vy, Image botImg) {
     	Sprite bot = new Sprite(rad, x, y, vx, vy, botImg);
     	botList.add(bot);
+			pList.add(bot);
     }
 
     void addPlayer(int rad, int x, int y, int vx, int vy, Image playerImage){
     	player = new Sprite(rad, x, y, vx, vy, playerImage);
+			pList.add(player);
     }
 
     void addGraveStone(Image gImg){
@@ -34,35 +36,48 @@ public class GWModel extends PSysModel {
     	projectileImage = pImg;
     }
 
-    int f(int w){
-    	if(w<0){
-    		return -1;
-    	}
-    	else if(w>0){
-    		return 1;
-    	}
-    	else
-    		return 0;
+    int f(Sprite p1){
+			if (p1.velX > 0 || p1.velY>0){
+				return 1;
+			}
+			else if (p1.velX < 0 || p1.velY < 0){
+				return -1;
+			}
+			else{
+				return 0;
+			}
     }
 
     void addProjectile(Sprite p1){
-    	Sprite projectile = new Sprite(p1.radius, p1.x+f(1)*(p1.radius+10), p1.y+f(1)*(p1.radius + 10), p1.velX, p1.velY, projectileImage);
+    	Sprite projectile = new Sprite(10, p1.x+f(p1)*(p1.radius+10), p1.y+f(p1)*(p1.radius + 10), (p1.velX)*2, (p1.velY)*2, projectileImage);
     	projectileList.add(projectile);
+			pList.add(projectile);
+			System.out.println("Projectile Fired");
+			System.out.println("x: "+projectile.x +"y: "+ projectile.y);
+			System.out.println("x: "+ player.x + "y: "+player.y);
     }
 
     void keyPressed(KeyEvent e){
     	int keyCode = e.getKeyCode();
     	if(keyCode == KeyEvent.VK_UP){
-    		player.velY += 5;
-    	}
-    	else if(keyCode == KeyEvent.VK_DOWN){
+				System.out.println("Up is pressed");
     		player.velY -= 5;
+				System.out.println(player.velY);
     	}
-    	else if(keyCode == KeyEvent.VK_LEFT){
+			if(keyCode == KeyEvent.VK_DOWN){
+				System.out.println("Down is pressed");
+    		player.velY += 5;
+				System.out.println(player.velY);
+    	}
+			if(keyCode == KeyEvent.VK_LEFT){
+				System.out.println("Left is pressed");
     		player.velX -= 5;
+				System.out.println(player.velX);
     	}
-    	else if(keyCode == KeyEvent.VK_RIGHT){
+    	if(keyCode == KeyEvent.VK_RIGHT){
+				System.out.println("Right is pressed");
     		player.velX += 5;
+				System.out.println(player.velX);
     	}
 			if(keyCode == KeyEvent.VK_SPACE){
 				addProjectile(player);
@@ -75,7 +90,8 @@ public class GWModel extends PSysModel {
     }
 
     void orientBots(){
-    	for (Sprite bot: botList){
+    	for (int k = 0; k < botList.size(); k++){
+				Sprite bot = botList.get(k);
     		if(bot.x > player.x){
     			bot.velX = -1;
     		}
@@ -88,46 +104,50 @@ public class GWModel extends PSysModel {
     		else if(bot.y < player.x){
     			bot.velY = 1;
     		}
-				addProjectile(bot);
+				addProjectile(botList.get(k));
     	}
     }
 
     void checkCollide(){
-
-    	for (int k = 0; k < botList.size(); k++){
-		  if ( isOverlap(botList.get(k), player) ){
-					Sprite bot = botList.get(k);
-	   		  bot = new Sprite(bot.radius, bot.x, bot.y, bot.velX, bot.velY , tombstoneImage);
-    		  bot.velX = 0;
-    		  bot.velY = 0;
-       		player = new Sprite(player.radius, player.x, player.y, player.velX, player.velY , tombstoneImage);
-    		  player.velX = 0;
-    		  player.velY = 0;
-		  };
+			int projectileListSize = projectileList.size();
+			int botListSize = botList.size();
+    	for (int k = 0; k < botListSize; k++){
+			  if ( isOverlap(botList.get(k), player) ){
+						Sprite bot = botList.get(k);
+		   		  bot = new Sprite(bot.radius, bot.x, bot.y, 0, 0, tombstoneImage);
+	       		player = new Sprite(player.radius, player.x, player.y, 0, 0, tombstoneImage);
+			  };
+				for (int m = 0; m < botListSize; m++) {
+					if ( isOverlap(botList.get(k), botList.get(m)) ){
+						Sprite bot1 = botList.get(k);
+						Sprite bot2 = botList.get(m);
+						bot1 =new Sprite(bot1.radius, bot1.x, bot1.y, 0, 0, tombstoneImage);
+						bot2 =new Sprite(bot2.radius, bot2.x, bot2.y, 0, 0, tombstoneImage);
+					}
+				}
     	}
-
-       for (int i = 0; i < projectileList.size(); i++){
-    	  if( isOverlap(player, projectileList.get(i))){
-    		  player = new Sprite(player.radius, player.x, player.y, player.velX, player.velY , tombstoneImage);
-    		  player.velX = 0;
-    		  player.velY = 0;
-					Sprite proj = projectileList.get(i);
-    		  Sprite deadproj = new Sprite(proj.radius, proj.x, proj.y, proj.velX, proj.velY, tombstoneImage);
-    		  deadproj.velX = 0;
-    		  deadproj.velY = 0;
-    	  };
-
-    	  for (int j = 0; j < botList.size(); j++){
-    		  if ( isOverlap(botList.get(j), projectileList.get(i)) ){
-						  Sprite bot = botList.get(j);
-    	   		  bot = new Sprite(bot.radius, bot.x, bot.y, bot.velX, bot.velY , tombstoneImage);
-        		  bot.velX = 0;
-        		  bot.velY = 0;
-        		  projectileList.remove(projectileList.get(i));
-    		  };
-    	  }
-       }
-
+			if (projectileList.size() > 0){
+	       for (int i = 0; i < projectileListSize; i++){
+	    	  if( isOverlap(player, projectileList.get(i))){
+	    		  player = new Sprite(player.radius, player.x, player.y, 0, 0, tombstoneImage);
+						Sprite proj = projectileList.get(i);
+						projectileList.remove(proj);
+						pList.remove(proj);
+						projectileListSize -= 1;
+	    	  };
+	    	  for (int j = 0; j < botListSize ; j++){
+	    		  if ( isOverlap(botList.get(j), projectileList.get(i)) ){
+							  Sprite bot = botList.get(j);
+	    	   		  bot = new Sprite(bot.radius, bot.x, bot.y, 0, 0, tombstoneImage);
+								Sprite proj = projectileList.get(i);
+								pList.remove(proj);
+	        		  projectileList.remove(proj);
+								projectileListSize -= 1;
+								botListSize -= 1;
+	    		  };
+	    	  }
+	       }
+			 }
     }
 
     boolean isOverlap(Particle p1, Particle p2) {
@@ -139,6 +159,5 @@ public class GWModel extends PSysModel {
         else
             return false;
     }
-
 
 }

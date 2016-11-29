@@ -6,7 +6,7 @@ public class PSysModel {
     // each particle: x, y, velX, velY, radius
 
     ArrayList <Particle> pList;
-    
+
     PSysModel() {
 	pList = new ArrayList<Particle>();
     }
