@@ -7,7 +7,8 @@ import javax.imageio.ImageIO;
 
 public class Sprite extends Particle{
 
-    Image image; // image to display for sprite
+    Image image = null; // image to display for sprite
+    Boolean alive = true;
 
     Sprite() {
     }
@@ -31,5 +32,5 @@ public class Sprite extends Particle{
     void draw(Graphics2D g) {
     	g.drawImage(image, x, y, null);
     }
-
+    
 }
