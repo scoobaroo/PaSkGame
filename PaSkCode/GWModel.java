@@ -131,11 +131,10 @@ public class GWModel extends PSysModel {
 						kill(bot);
 			  };
 				for (int m = 1; m < botList.size(); m++) {
-					Sprite bot1 = botList.get(k);
 					Sprite bot2 = botList.get(m);
-					if ( isOverlap(bot1, bot2) && bot1.alive == true && bot2.alive==true){
+					if ( isOverlap(bot, bot2) && bot.alive == true && bot2.alive==true && bot != bot2){
 						System.out.println("bot collision detected!!!!");
-						kill(bot1);
+						kill(bot);
 						kill(bot2);
 					}
 				}
