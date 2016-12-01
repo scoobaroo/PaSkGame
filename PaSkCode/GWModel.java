@@ -18,9 +18,13 @@ public class GWModel extends PSysModel {
     }
 
     void addBot(int rad, int x, int y, int vx, int vy, Image botImg) {
-    	Sprite bot = new Sprite(rad, x, y, vx, vy, botImg);
-    	botList.add(bot);
-			pList.add(bot);
+			if(botImg !=null){
+				Image sImg = botImg.getScaledInstance(rad*2, rad*2, Image.SCALE_DEFAULT);
+				Image botImage = sImg;
+				Sprite bot = new Sprite(rad, x, y, vx, vy, botImage);
+				botList.add(bot);
+				pList.add(bot);
+			}
     }
 
     void addPlayer(int rad, int x, int y, int vx, int vy, Image playerImage){
@@ -125,15 +129,15 @@ public class GWModel extends PSysModel {
     void checkCollide(){
     	for (int k = 0; k < botList.size(); k++){
 				Sprite bot = botList.get(k);
-			  if ( isOverlap(bot, player) && player.alive == true){
+			  if ( isOverlap(bot, player)){
 						System.out.println("Collision between player and bot detected!!!");
 						kill(player);
 						kill(bot);
 			  };
 				for (int m = 1; m < botList.size(); m++) {
 					Sprite bot2 = botList.get(m);
-					if ( isOverlap(bot, bot2) && bot.alive == true && bot2.alive==true && bot != bot2){
-						System.out.println("bot collision detected!!!!");
+					if ( isOverlap(bot, bot2) && bot != bot2){
+						System.out.println("Collision between bots detected!!!!");
 						kill(bot);
 						kill(bot2);
 					}
@@ -142,7 +146,7 @@ public class GWModel extends PSysModel {
 			if (projectileList.size() > 0){
 	       for (int i = 0; i < projectileList.size() ; i++){
 					Sprite proj = projectileList.get(i);
-	    	  if( isOverlap(player, proj) && player.alive==true){
+	    	  if( isOverlap(player, proj)){
 						System.out.println("Collision between player and projectile detected!!!");
 						kill(player);
 						projectileList.remove(proj);
@@ -150,7 +154,7 @@ public class GWModel extends PSysModel {
 	    	  };
 	    	  for (int j = 0; j < botList.size() ; j++){
 						Sprite bot = botList.get(j);
-	    		  if ( isOverlap(bot, proj) && bot.alive== true ){
+	    		  if ( isOverlap(bot, proj) ){
 								System.out.println("Collision between bot and projectile detected!!!");
 								kill(bot);
 								pList.remove(proj);
